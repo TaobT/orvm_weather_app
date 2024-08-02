@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                Colors.blue.shade100,
-                Colors.blue.shade300,
-                Colors.blue.shade500
+                  Colors.blue.shade100,
+                  Colors.blue.shade300,
+                  Colors.blue.shade500
               ])
             ),
             child: const SafeArea(child: HomeScreen()),

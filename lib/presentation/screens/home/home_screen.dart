@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/source/network/mqtt_service.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,14 +11,36 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _WeatherView extends StatelessWidget {
+class _WeatherView extends StatefulWidget {
   const _WeatherView({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  State<_WeatherView> createState() => _WeatherViewState();
+}
 
+class _WeatherViewState extends State<_WeatherView> {
+
+  late MqttService _service;
+  double _temp = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _service = MqttService('broker.emqx.io');
+    
+    _service.obtenerTemperaturaStream().listen((temp) {
+      setState(() {
+        _temp = temp;
+      });
+    });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
       color: Colors.white
     );
@@ -29,8 +52,8 @@ class _WeatherView extends StatelessWidget {
         children: [
           Text('Dolores Hidalgo C.I.N', style: titleStyle),
           const SizedBox(height: 20),
-          const Text('0.0 °C',
-            style: TextStyle(
+          Text('$_temp °C',
+            style: const TextStyle(
             color: Colors.white,
             fontSize: 70,
             fontWeight: FontWeight.w400
